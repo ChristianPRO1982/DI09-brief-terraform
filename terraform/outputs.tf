@@ -11,10 +11,17 @@ output "storage_containers" {
 }
 
 output "acr_name" {
-  value = module.acr.name
+  value = module.acr.acr_name
 }
 
 output "acr_login_server" {
-  value = module.acr.login_server
+  value = module.acr.acr_login_server
 }
 
+output "container_app_name" {
+  value = module.container_apps.container_app_name
+}
+
+output "log_analytics_name" {
+  value = module.container_apps.log_analytics_name
+}
