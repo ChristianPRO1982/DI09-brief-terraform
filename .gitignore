@@ -1,22 +1,105 @@
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
+# ========================================
+# Fichiers de credentials (IMPORTANT)
+# ========================================
+.env
+.env.local
+
+# ========================================
+# Données locales
+# ========================================
+data/
+*.parquet
+*.csv
+benchmarks/
+metrics.PY
+monitoring
+# ========================================
+# DLT (dlthub)
+# ========================================
+.dlt/
+dlt_secrets.toml
+
+# ========================================
+# Python
+# ========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ========================================
+# Virtual environments (UV)
+# ========================================
+.venv/
+venv/
+ENV/
+env/
+
+# ========================================
+# UV
+# ========================================
+.uv/
+uv.lock
+
+# ========================================
+# IDEs
+# ========================================
 .vscode/
-#Cache folder
-.alcache/
-#Symbols folder
-.alpackages/
-#Snapshots folder
-.snapshots/
-#Testing Output folder
-.output/
-#Extension App-file
-*.app
-#Rapid Application Development File
-rad.json
-#Translation Base-file
-*.g.xlf
-#License-file
-*.flf
-#Test results file
-TestResults.xml
+.idea/
+*.swp
+*.swo
+*~
+
+# ========================================
+# OS
+# ========================================
+.DS_Store
+Thumbs.db
+
+# ========================================
+# Logs
+# ========================================
+*.log
+logs/
+
+# ========================================
+# Docker volumes (ne pas tracker)
+# ========================================
+postgres_data/
+azurite_data/
+pgadmin_data/
+
+# ========================================
+# Jupyter
+# ========================================
+.ipynb_checkpoints/
+*.ipynb
+
+# ========================================
+# Tests
+# ========================================
+.pytest_cache/
+.coverage
+htmlcov/
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+terraform/
