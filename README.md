@@ -256,6 +256,14 @@ az containerapp update \
   --set-env-vars START_DATE=2024-01 END_DATE=2024-01
 ```
 
+ça peut être utile :
+```bash terraform
+az containerapp update \
+  --name ca-nyctaxi-pipeline-dev \
+  --resource-group cmartinyRG \
+  --set-env-vars POSTGRES_PASSWORD="<NOUVEAU_PASSWORD>"
+```
+
 ### 2 - Relancer le pipeline (restart de la revision active)
 
 ```bash terraform
@@ -284,3 +292,59 @@ az containerapp logs show \
 ```
 
 résultats
+```bash terraform
+{"TimeStamp":"2026-01-16T13:50:41.68749","Log":"Connecting to the container 'pipeline'..."}
+{"TimeStamp":"2026-01-16T13:50:41.78468","Log":"Successfully Connected to container: 'pipeline' [Revision: 'ca-nyctaxi-pipeline-dev--0000005', Replica: 'ca-nyctaxi-pipeline-dev--0000005-586d5c78d9-9bbtn']"}
+{"TimeStamp":"2026-01-16T13:50:29.8949095+00:00","Log":"13:50:29.894 | INFO     | utils.database:get_database_postgresql:15 - Connexion \u00E0 la base de donn\u00E9es PostgreSQL..."}
+{"TimeStamp":"2026-01-16T13:50:29.9342694+00:00","Log":"13:50:29.934 | SUCCESS  | utils.database:get_database_postgresql:28 - Connexion \u00E0 la base de donn\u00E9es OK"}
+{"TimeStamp":"2026-01-16T13:50:29.9425858+00:00","Log":"13:50:29.942 | SUCCESS  | utils.database:execute_sql_file_postgresql:78 - Fichier sql/create_staging_table.sql ex\u00E9cut\u00E9 avec succ\u00E8s"}
+{"TimeStamp":"2026-01-16T13:50:29.9428519+00:00","Log":"13:50:29.942 | INFO     | utils.database:get_database_postgresql:37 - Connexion ferm\u00E9e"}
+{"TimeStamp":"2026-01-16T13:50:29.9430131+00:00","Log":"13:50:29.942 | INFO     | __main__:\u003Cmodule\u003E:39 - TRUNCATE"}
+{"TimeStamp":"2026-01-16T13:50:29.9430313+00:00","Log":"13:50:29.942 | INFO     | utils.database:get_database_postgresql:15 - Connexion \u00E0 la base de donn\u00E9es PostgreSQL..."}
+{"TimeStamp":"2026-01-16T13:50:29.9812842+00:00","Log":"13:50:29.981 | SUCCESS  | utils.database:get_database_postgresql:28 - Connexion \u00E0 la base de donn\u00E9es OK"}
+{"TimeStamp":"2026-01-16T13:50:30.000284+00:00","Log":"13:50:29.999 | SUCCESS  | utils.database:execute_sql_file_postgresql:78 - Fichier sql/truncate.sql ex\u00E9cut\u00E9 avec succ\u00E8s"}
+{"TimeStamp":"2026-01-16T13:50:30.0004856+00:00","Log":"13:50:30.000 | INFO     | utils.database:get_database_postgresql:37 - Connexion ferm\u00E9e"}
+{"TimeStamp":"2026-01-16T13:50:30.0005232+00:00","Log":"13:50:30.000 | INFO     | utils.database:get_database_duckdb:42 - Connexion \u00E0 la base de donn\u00E9es DuckDB..."}
+{"TimeStamp":"2026-01-16T13:50:30.0006764+00:00","Log":"13:50:30.000 | INFO     | utils.database:get_database_duckdb:46 - Configuration DuckDB : 4 threads"}
+{"TimeStamp":"2026-01-16T13:50:32.2935108+00:00","Log":"13:50:32.293 | SUCCESS  | utils.database:get_database_duckdb:60 - Connexion \u00E0 la base de donn\u00E9es OK"}
+{"TimeStamp":"2026-01-16T13:50:32.2965706+00:00","Log":"13:50:32.296 | INFO     | utils.database:get_database_duckdb:69 - Connexion ferm\u00E9e"}
+{"TimeStamp":"2026-01-16T13:50:32.2966009+00:00","Log":"13:50:32.296 | INFO     | __main__:charger_avec_duckdb:24 - 1 fichiers d\u00E9tect\u00E9s"}
+{"TimeStamp":"2026-01-16T13:50:32.2967334+00:00","Log":"13:50:32.296 | INFO     | __main__:charger_avec_duckdb:28 - Chargement optimis\u00E9 de TOUS les fichiers : data/raw/*.parquet"}
+{"TimeStamp":"2026-01-16T13:50:32.2969108+00:00","Log":"13:50:32.296 | DEBUG    | utils.database:execute_sql_file_duckdb:98 - Param\u00E8tre remplac\u00E9 : {glob_pattern} -\u003E data/raw/*.parquet"}
+{"TimeStamp":"2026-01-16T13:50:32.2980558+00:00","Log":"13:50:32.296 | INFO     | utils.database:get_database_duckdb:42 - Connexion \u00E0 la base de donn\u00E9es DuckDB..."}
+{"TimeStamp":"2026-01-16T13:50:32.2980719+00:00","Log":"13:50:32.296 | INFO     | utils.database:get_database_duckdb:46 - Configuration DuckDB : 4 threads"}
+{"TimeStamp":"2026-01-16T13:50:33.0964556+00:00","Log":"13:50:33.096 | SUCCESS  | utils.database:get_database_duckdb:60 - Connexion \u00E0 la base de donn\u00E9es OK"}
+{"TimeStamp":"2026-01-16T13:50:33.0965061+00:00","Log":"13:50:33.096 | INFO     | utils.database:execute_sql_file_duckdb:101 - Ex\u00E9cution de sql/insert_to.sql..."}
+{"TimeStamp":"2026-01-16T13:51:07.9018384+00:00","Log":"13:51:07.901 | SUCCESS  | utils.database:execute_sql_file_duckdb:103 - \u2713 sql/insert_to.sql ex\u00E9cut\u00E9 avec succ\u00E8s"}
+{"TimeStamp":"2026-01-16T13:51:07.9084797+00:00","Log":"13:51:07.908 | INFO     | utils.database:get_database_duckdb:69 - Connexion ferm\u00E9e"}
+{"TimeStamp":"2026-01-16T13:51:07.909395+00:00","Log":"13:51:07.908 | SUCCESS  | __main__:charger_avec_duckdb:30 - insert_to.sql ex\u00E9cut\u00E9 avec succ\u00E8s"}
+{"TimeStamp":"2026-01-16T13:51:07.9094129+00:00","Log":"13:51:07.908 | INFO     | __main__:main:13 - \uD83D\uDD04 \u00C9tape 2: Transformation des donn\u00E9es..."}
+{"TimeStamp":"2026-01-16T13:51:07.909449+00:00","Log":"13:51:07.909 | INFO     | __main__:\u003Cmodule\u003E:21 - D\u00E9marrage de la Pipeline : Transformation des donn\u00E9es"}
+{"TimeStamp":"2026-01-16T13:51:07.9096544+00:00","Log":"13:51:07.909 | INFO     | utils.database:get_database_postgresql:15 - Connexion \u00E0 la base de donn\u00E9es PostgreSQL..."}
+{"TimeStamp":"2026-01-16T13:51:07.992883+00:00","Log":"13:51:07.992 | SUCCESS  | utils.database:get_database_postgresql:28 - Connexion \u00E0 la base de donn\u00E9es OK"}
+{"TimeStamp":"2026-01-16T13:51:08.3008+00:00","Log":"13:51:08.300 | SUCCESS  | utils.database:execute_sql_file_postgresql:78 - Fichier sql/transformations.sql ex\u00E9cut\u00E9 avec succ\u00E8s"}
+{"TimeStamp":"2026-01-16T13:51:08.3012373+00:00","Log":"13:51:08.301 | INFO     | utils.database:get_database_postgresql:37 - Connexion ferm\u00E9e"}
+{"TimeStamp":"2026-01-16T13:51:08.3012782+00:00","Log":"13:51:08.301 | INFO     | __main__:transformer_donnees:17 - Connexion ferm\u00E9e"}
+{"TimeStamp":"2026-01-16T13:51:08.3015503+00:00","Log":"13:51:08.301 | SUCCESS  | __main__:\u003Cmodule\u003E:23 - Pipeline termin\u00E9e : success"}
+{"TimeStamp":"2026-01-16T13:51:08.301565+00:00","Log":"13:51:08.301 | SUCCESS  | __main__:main:16 - \u2705 Pipeline termin\u00E9 avec succ\u00E8s"}
+```
+
+Coté DBeaver :
+```sql
+select *
+  from public.staging_taxi_trips
+ limit 10
+```
+résultats
+| trip_id | vendor_id | tpep_pickup_datetime     | tpep_dropoff_datetime    | passenger_count | trip_distance | ratecode_id | pu_location_id | do_location_id | payment_type | fare_amount | extra | mta_tax | tip_amount | tolls_amount | improvement_surcharge | total_amount | trip_duration_minutes |
+|--------:|----------:|--------------------------|--------------------------|----------------:|--------------:|------------:|---------------:|---------------:|-------------:|------------:|------:|--------:|-----------:|--------------:|-----------------------:|-------------:|----------------------:|
+| 478742  | 2         | 2025-11-05 17:33:06.000  | 2025-11-05 17:43:28.000  | 1               | 0.95          | 1           | 68             | 234            | 4            | 9.3         | 2.5   | 0.5     | 0.0        | 0.0           | 1.0                    | 16.55        | 10.37                 |
+| 478743  | 2         | 2025-11-05 17:57:33.000  | 2025-11-05 18:03:55.000  | 5               | 0.72          | 1           | 170            | 186            | 1            | 7.2         | 2.5   | 0.5     | 2.89       | 0.0           | 1.0                    | 17.34        | 6.37                  |
+| 478744  | 2         | 2025-11-05 17:55:12.000  | 2025-11-05 19:01:45.000  | 3               | 17.74         | 1           | 132            | 48             | 1            | 80.0        | 2.5   | 0.5     | 18.84      | 6.94          | 1.0                    | 114.78       | 66.55                 |
+| 478745  | 2         | 2025-11-05 17:29:49.000  | 2025-11-05 17:50:14.000  | 3               | 1.02          | 1           | 230            | 164            | 1            | 17.0        | 2.5   | 0.5     | 4.85       | 0.0           | 1.0                    | 29.10        | 20.42                 |
+| 478746  | 2         | 2025-11-05 17:52:37.000  | 2025-11-05 18:06:49.000  | 1               | 0.67          | 1           | 164            | 230            | 1            | 12.8        | 2.5   | 0.5     | 4.01       | 0.0           | 1.0                    | 24.06        | 14.20                 |
+| 478747  | 1         | 2025-11-05 17:25:18.000  | 2025-11-05 17:33:22.000  | 1               | 0.70          | 1           | 107            | 107            | 2            | 8.6         | 5.75  | 0.5     | 0.0        | 0.0           | 1.0                    | 15.85        | 8.07                  |
+| 478748  | 2         | 2025-11-05 17:46:53.000  | 2025-11-05 17:59:02.000  | 1               | 0.88          | 1           | 163            | 237            | 1            | 11.4        | 2.5   | 0.5     | 5.59       | 0.0           | 1.0                    | 24.24        | 12.15                 |
+| 478749  | 2         | 2025-11-05 17:09:21.000  | 2025-11-05 17:32:21.000  | 1               | 1.94          | 1           | 162            | 140            | 1            | 20.5        | 2.5   | 0.5     | 3.0        | 0.0           | 1.0                    | 30.75        | 23.00                 |
+| 478750  | 2         | 2025-11-05 17:47:40.000  | 2025-11-05 17:53:31.000  | 1               | 0.87          | 1           | 229            | 237            | 1            | 7.2         | 2.5   | 0.5     | 2.89       | 0.0           | 1.0                    | 17.34        | 5.85                  |
+| 478751  | 2         | 2025-11-05 17:16:35.000  | 2025-11-05 17:33:17.000  | 1               | 1.46          | 1           | 239            | 230            | 1            | 15.6        | 2.5   | 0.5     | 4.57       | 0.0           | 1.0                    | 27.42        | 16.70                 |
