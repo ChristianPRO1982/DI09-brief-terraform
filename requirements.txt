@@ -1,0 +1,5 @@
+azure-storage-blob==12.23.0
+duckdb==1.1.3
+psycopg2-binary==2.9.9
+python-dateutil==2.9.0.post0
+python-dotenv

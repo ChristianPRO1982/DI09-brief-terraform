@@ -1,5 +1,11 @@
 # Rendu du brief
 
+**Sommaire :**
+
+A - Terraform déployé correctement ?
+
+B - Lancement des pipelines et résultats
+
 ## Terraform déployé correctement ?
 
 > Terminal du docker faisant tourné *Terraform*.
@@ -247,7 +253,8 @@ Une fois connecté, faire un `select 1` dans Postgres pour vérifier.
 
 ## Lancement des pipelines
 
-### 1 - Mettre les dates du run (START_DATE / END_DATE)
+### pipeline 1 - ingestion + staging + transformation dans DB Cosmos
+**1 - Mettre les dates du run (START_DATE / END_DATE)**
 
 ```bash terraform
 az containerapp update \
@@ -264,7 +271,7 @@ az containerapp update \
   --set-env-vars POSTGRES_PASSWORD="<NOUVEAU_PASSWORD>"
 ```
 
-### 2 - Relancer le pipeline (restart de la revision active)
+**2 - Relancer le pipeline (restart de la revision active)**
 
 ```bash terraform
 az containerapp revision list \
@@ -282,7 +289,7 @@ az containerapp revision restart \
 ```
 > `"Restart succeeded"`
 
-### 3 - Valider “ça run” dans les logs
+**3 - Valider “ça run” dans les logs**
 
 ```bash terraform
 az containerapp logs show \
@@ -329,7 +336,7 @@ résultats
 {"TimeStamp":"2026-01-16T13:51:08.301565+00:00","Log":"13:51:08.301 | SUCCESS  | __main__:main:16 - \u2705 Pipeline termin\u00E9 avec succ\u00E8s"}
 ```
 
-Coté DBeaver :
+**4 - Coté DBeaver**
 ```sql
 select *
   from public.staging_taxi_trips
@@ -348,3 +355,7 @@ résultats
 | 478749  | 2         | 2025-11-05 17:09:21.000  | 2025-11-05 17:32:21.000  | 1               | 1.94          | 1           | 162            | 140            | 1            | 20.5        | 2.5   | 0.5     | 3.0        | 0.0           | 1.0                    | 30.75        | 23.00                 |
 | 478750  | 2         | 2025-11-05 17:47:40.000  | 2025-11-05 17:53:31.000  | 1               | 0.87          | 1           | 229            | 237            | 1            | 7.2         | 2.5   | 0.5     | 2.89       | 0.0           | 1.0                    | 17.34        | 5.85                  |
 | 478751  | 2         | 2025-11-05 17:16:35.000  | 2025-11-05 17:33:17.000  | 1               | 1.46          | 1           | 239            | 230            | 1            | 15.6        | 2.5   | 0.5     | 4.57       | 0.0           | 1.0                    | 27.42        | 16.70                 |
+
+### Pipeline 2 — Load (Blob Storage ➜ PostgreSQL “staging”)
+
+Voir le code python dans `./src/`
