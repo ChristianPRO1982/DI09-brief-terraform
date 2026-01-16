@@ -48,3 +48,10 @@ variable "container_apps_max_replicas" {
   description = "Max replicas"
   default     = 1
 }
+
+variable "cosmos_db_admin_username" {
+  type        = string
+  description = "Admin username for Cosmos DB for PostgreSQL."
+  default     = "citus"
+}
+

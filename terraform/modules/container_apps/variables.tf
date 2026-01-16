@@ -19,12 +19,12 @@ variable "acr_login_server" {
 }
 
 variable "acr_username" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "acr_password" {
-  type = string
+  type      = string
   sensitive = true
 }
 
@@ -52,3 +52,10 @@ variable "max_replicas" {
   type    = number
   default = 1
 }
+
+variable "postgres_host" { type = string }
+variable "postgres_port" { type = number }
+variable "postgres_db" { type = string }
+variable "postgres_user" { type = string }
+variable "postgres_password" { type = string }
+variable "postgres_ssl_mode" { type = string }

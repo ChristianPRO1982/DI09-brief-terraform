@@ -28,6 +28,11 @@ resource "azurerm_container_app" "main" {
     value = var.acr_password
   }
 
+  secret {
+    name  = "postgres-password"
+    value = var.postgres_password
+  }
+
   registry {
     server               = var.acr_login_server
     username             = var.acr_username
@@ -40,6 +45,36 @@ resource "azurerm_container_app" "main" {
       image  = "${var.acr_login_server}/nyc-taxi-pipeline:latest"
       cpu    = var.cpu
       memory = var.memory
+
+      env {
+        name  = "POSTGRES_HOST"
+        value = var.postgres_host
+      }
+
+      env {
+        name  = "POSTGRES_PORT"
+        value = tostring(var.postgres_port)
+      }
+
+      env {
+        name  = "POSTGRES_DB"
+        value = var.postgres_db
+      }
+
+      env {
+        name  = "POSTGRES_USER"
+        value = var.postgres_user
+      }
+
+      env {
+        name  = "POSTGRES_SSL_MODE"
+        value = var.postgres_ssl_mode
+      }
+
+      env {
+        name        = "POSTGRES_PASSWORD"
+        secret_name = "postgres-password"
+      }
     }
 
     min_replicas = var.min_replicas
