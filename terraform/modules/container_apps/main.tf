@@ -75,6 +75,12 @@ resource "azurerm_container_app" "main" {
         name        = "POSTGRES_PASSWORD"
         secret_name = "postgres-password"
       }
+
+      env {
+        name  = "START_DATE"
+        value = var.start_date
+      }
+
     }
 
     min_replicas = var.min_replicas

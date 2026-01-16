@@ -1,10 +1,20 @@
+resource "random_string" "name_suffix" {
+  length  = 6
+  upper   = false
+  special = false
+}
+
+locals {
+  cluster_name = "${var.name}-${random_string.name_suffix.result}"
+}
+
 resource "random_password" "admin" {
   length  = 24
   special = true
 }
 
 resource "azurerm_cosmosdb_postgresql_cluster" "main" {
-  name                = var.name
+  name                = local.cluster_name
   resource_group_name = var.resource_group_name
   location            = var.location
   tags                = var.tags

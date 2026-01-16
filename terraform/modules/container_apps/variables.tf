@@ -59,3 +59,7 @@ variable "postgres_db" { type = string }
 variable "postgres_user" { type = string }
 variable "postgres_password" { type = string }
 variable "postgres_ssl_mode" { type = string }
+
+variable "start_date" {
+  type = string
+}

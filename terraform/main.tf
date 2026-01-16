@@ -37,6 +37,8 @@ module "container_apps" {
   min_replicas = var.container_apps_min_replicas
   max_replicas = var.container_apps_max_replicas
 
+  start_date = "2023-01"
+
   postgres_host     = module.cosmos_postgres.host
   postgres_port     = module.cosmos_postgres.port
   postgres_db       = module.cosmos_postgres.db_name

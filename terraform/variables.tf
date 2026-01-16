@@ -55,3 +55,8 @@ variable "cosmos_db_admin_username" {
   default     = "citus"
 }
 
+variable "subscription_id" {
+  type        = string
+  description = "5e2150ec-ee17-4fa2-8714-825c2fb7d22a"
+}
+
