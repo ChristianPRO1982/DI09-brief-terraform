@@ -359,3 +359,5 @@ résultats
 ### Pipeline 2 — Load (Blob Storage ➜ PostgreSQL “staging”)
 
 Voir le code python dans `./src/`
+
+La connexion au blob est OK et il est rempli d'un fichier Parquet mais, le code n'a pas réussit à mettre dans la BDD final.
