@@ -247,3 +247,40 @@ Une fois connecté, faire un `select 1` dans Postgres pour vérifier.
 
 ## Lancement des pipelines
 
+### 1 - Mettre les dates du run (START_DATE / END_DATE)
+
+```bash terraform
+az containerapp update \
+  --name ca-nyctaxi-pipeline-dev \
+  --resource-group cmartinyRG \
+  --set-env-vars START_DATE=2024-01 END_DATE=2024-01
+```
+
+### 2 - Relancer le pipeline (restart de la revision active)
+
+```bash terraform
+az containerapp revision list \
+  --name ca-nyctaxi-pipeline-dev \
+  --resource-group cmartinyRG \
+  -o table
+```
+
+Repère le nom de revision (ex: ca-nyctaxi-pipeline-dev--xxxxx), puis redémarre-la :
+```bash terraform
+az containerapp revision restart \
+  --name ca-nyctaxi-pipeline-dev \
+  --resource-group cmartinyRG \
+  --revision <REVISION_NAME>
+```
+> `"Restart succeeded"`
+
+### 3 - Valider “ça run” dans les logs
+
+```bash terraform
+az containerapp logs show \
+  --name ca-nyctaxi-pipeline-dev \
+  --resource-group cmartinyRG \
+  --follow
+```
+
+résultats

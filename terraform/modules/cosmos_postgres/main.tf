@@ -10,7 +10,7 @@ locals {
 
 resource "random_password" "admin" {
   length  = 24
-  special = true
+  special = false
 }
 
 resource "azurerm_cosmosdb_postgresql_cluster" "main" {
