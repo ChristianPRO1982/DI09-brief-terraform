@@ -60,3 +60,7 @@ variable "subscription_id" {
   description = "5e2150ec-ee17-4fa2-8714-825c2fb7d22a"
 }
 
+variable "my_public_ip" {
+  type = string
+}
+

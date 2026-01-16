@@ -32,3 +32,7 @@ variable "coordinator_server_edition" {
   type    = string
   default = "BurstableMemoryOptimized"
 }
+
+variable "my_public_ip" {
+  type = string
+}

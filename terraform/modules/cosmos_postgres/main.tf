@@ -35,3 +35,11 @@ resource "azurerm_cosmosdb_postgresql_firewall_rule" "allow_azure" {
   start_ip_address = "0.0.0.0"
   end_ip_address   = "0.0.0.0"
 }
+
+resource "azurerm_cosmosdb_postgresql_firewall_rule" "allow_my_ip" {
+  name       = "allow-my-ip"
+  cluster_id = azurerm_cosmosdb_postgresql_cluster.main.id
+
+  start_ip_address = var.my_public_ip
+  end_ip_address   = var.my_public_ip
+}

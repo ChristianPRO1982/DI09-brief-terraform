@@ -25,3 +25,8 @@ output "container_app_name" {
 output "log_analytics_name" {
   value = module.container_apps.log_analytics_name
 }
+
+output "cosmos_postgres_admin_password" {
+  value     = module.cosmos_postgres.admin_password
+  sensitive = true
+}

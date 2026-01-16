@@ -1,13 +1,13 @@
 # Rendu du brief
 
-## Terraform déployé
+## Terraform déployé correctement ?
 
 > Terminal du docker faisant tourné *Terraform*.
 
 ### Exécution de `Terraform apply`
 
 ```bash terraform
-/workspace/terraform # terraform apply -auto-approve
+> terraform apply -auto-approve
 module.cosmos_postgres.random_string.name_suffix: Refreshing state... [id=x72pea]
 [...]
 
@@ -57,7 +57,7 @@ storage_containers = {
 ### 1. Vérification de l’état Terraform
 
 ```bash terraform
-/workspace/terraform # terraform state list
+> terraform state list
 
 data.azurerm_resource_group.main
 module.acr.azurerm_container_registry.main
@@ -77,7 +77,7 @@ module.storage.random_string.suffix
 ### 2. Vérification des outputs Terraform
 
 ```bash terraform
-/workspace/terraform # terraform output
+> terraform output
 
 acr_login_server = "acrnyctaxidev.azurecr.io"
 acr_name = "acrnyctaxidev"
@@ -94,7 +94,7 @@ storage_containers = {
 ### 3. Vérification du Resource Group
 
 ```bash terraform
-/workspace/terraform # az group show --name cmartinyRG -o table
+> az group show --name cmartinyRG -o table
 
 Location       Name
 -------------  ----------
@@ -104,7 +104,7 @@ francecentral  cmartinyRG
 ### 4. Vérification du Container Registry (ACR)
 
 ```bash terraform
-/workspace/terraform # az acr show --name acrnyctaxidev -o table
+> az acr show --name acrnyctaxidev -o table
 
 NAME           RESOURCE GROUP    LOCATION       SKU    LOGIN SERVER              CREATION DATE         ADMIN ENABLED
 -------------  ----------------  -------------  -----  ------------------------  --------------------  ---------------
@@ -114,7 +114,7 @@ acrnyctaxidev  cmartinyRG        francecentral  Basic  acrnyctaxidev.azurecr.io 
 ### 5. Vérification de l’environnement Container Apps
 
 ```bash terraform
-/workspace/terraform # az containerapp env show \
+> az containerapp env show \
 >   --name cae-nyctaxi-dev \
 >   --resource-group cmartinyRG \
 >   -o table
@@ -127,7 +127,7 @@ France Central  cae-nyctaxi-dev  cmartinyRG
 ### 6. Vérification de l’application Container App
 
 ```bash terraform
-/workspace/terraform # az containerapp show \
+> az containerapp show \
 >   --name ca-nyctaxi-pipeline-dev \
 >   --resource-group cmartinyRG \
 >   -o table
@@ -140,18 +140,7 @@ ca-nyctaxi-pipeline-dev  France Central  cmartinyRG
 ### 7. Vérification des logs de la Container App
 
 ```bash terraform
-/workspace/terraform # az containerapp show \
->   --name ca-nyctaxi-pipeline-dev \
->   --resource-group cmartinyRG \
->   -o table
-Name                     Location        ResourceGroup
------------------------  --------------  ---------------
-ca-nyctaxi-pipeline-dev  France Central  cmartinyRG
-/workspace/terraform # 
-/workspace/terraform # 
-/workspace/terraform # 
-/workspace/terraform # 
-/workspace/terraform # az containerapp logs show \
+> az containerapp logs show \
 >   --name ca-nyctaxi-pipeline-dev \
 >   --resource-group cmartinyRG
 
@@ -179,10 +168,13 @@ ca-nyctaxi-pipeline-dev  France Central  cmartinyRG
 {"TimeStamp":"2026-01-16T12:28:52.8349728+00:00","Log":""}
 ```
 
+> L’erreur est liée à l’encodage du mot de passe PostgreSQL dans l’URL de connexion.
+> L’infrastructure est fonctionnelle, mais la configuration applicative nécessite un `URL encoding` du mot de passe pour les caractères spéciaux.
+
 ### 8. Vérification du compte de stockage
 
 ```bash terraform
-/workspace/terraform # az storage account show \
+> az storage account show \
 >   --name stnyctaxidev9sns2p \
 >   --resource-group cmartinyRG \
 >   -o table
@@ -195,7 +187,7 @@ Hot           False                    False                          True      
 ### 9. Vérification des containers du Storage Account
 
 ```bash terraform
-/workspace/terraform # az storage container list \
+> az storage container list \
 >   --account-name stnyctaxidev9sns2p \
 >   --auth-mode login \
 >   -o table
@@ -209,7 +201,7 @@ raw                        2026-01-16T10:37:59+00:00
 ### 10. Vérification du cluster Cosmos DB for PostgreSQL
 
 ```bash terraform
-/workspace/terraform # az resource show \
+> az resource show \
 >   --name cosmos-nyctaxi-dev-x72pea \
 >   --resource-group cmartinyRG \
 >   --resource-type "Microsoft.DBforPostgreSQL/serverGroupsv2" \
@@ -223,16 +215,35 @@ francecentral  cosmos-nyctaxi-dev-x72pea  cmartinyRG
 ### 11. Vérification de la règle firewall PostgreSQL
 
 ```bash terraform
-/workspace/terraform # az resource list \
+> az resource list \
 >   --resource-group cmartinyRG \
 >   --resource-type "Microsoft.DBforPostgreSQL/serverGroupsv2/firewallRules" \
 >   -o table
 
+[vide]
 ```
+
+> Aucune règle listée via Azure CLI, cependant la règle `allow-azure-services` est bien créée via Terraform et visible dans le state.
 
 ### 12. Vérification de la connectivité PostgreSQL
 
+Connexion avec DBeaver avec les informations suivantes :
+
+Le host (`fullyQualifiedDomainName`) :
 ```bash terraform
-/workspace/terraform # psql -c "SELECT 1;"
-sh: psql: not found
+az resource show \
+   -g cmartinyRG \
+   -n cosmos-nyctaxi-dev-x72pea \
+   --resource-type "Microsoft.DBforPostgreSQL/serverGroupsv2" \
+   --query "properties" \
+   -o jsonc
 ```
+
+DB : citus
+user : citus
+pwd en clair : `terraform output -raw cosmos_postgres_admin_password` à condition d'avoir le pwd dans les outputs même <sensive>.
+
+Une fois connecté, faire un `select 1` dans Postgres pour vérifier.
+
+## Lancement des pipelines
+

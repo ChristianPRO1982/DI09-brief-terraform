@@ -57,6 +57,8 @@ module "cosmos_postgres" {
 
   admin_username = var.cosmos_db_admin_username
 
+  my_public_ip = var.my_public_ip
+
   coordinator_server_edition      = "BurstableMemoryOptimized"
   coordinator_vcore_count         = 1
   coordinator_storage_quota_in_mb = 32768
